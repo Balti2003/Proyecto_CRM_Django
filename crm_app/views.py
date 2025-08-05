@@ -6,11 +6,22 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from .models import Client, Company, Interaction
 
 # Create your views here.
 
 class HomeView(TemplateView):
     template_name = "../templates/general/home.html"
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["total_clientes"] = Client.objects.count()
+        context["total_usuarios"] = User.objects.count()
+        context["total_empresas"] = Company.objects.count()
+        context["total_interacciones"] = Interaction.objects.count()
+        
+        return context
+    
     
 class LoginView(FormView):
     template_name = "../templates/general/login.html"

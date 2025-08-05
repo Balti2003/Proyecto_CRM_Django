@@ -32,9 +32,15 @@
                     <textarea class="form-control" id="id_mensaje" name="mensaje" rows="5" required></textarea>
                 </div>
 
+                {% if not request.user.is_authenticated %}
+                <div class="text-end">
+                    <button type="submit" class="btn btn-primary" disabled>Enviar mensaje</button>
+                </div>
+                {% else %}
                 <div class="text-end">
                     <button type="submit" class="btn btn-primary">Enviar mensaje</button>
                 </div>
+                {% endif %}
             </form>
         </div>
     </div>

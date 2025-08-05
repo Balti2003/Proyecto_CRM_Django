@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 
 class LoginForm(forms.Form):
-    username = forms.CharField(label="Email")
+    username = forms.CharField(label="Username")
     password = forms.CharField(label="Password", widget=forms.PasswordInput)
     
 
@@ -21,11 +21,12 @@ class RegistrationForm(forms.ModelForm):
     def save(self, commit=True):
         user = super().save(commit=False)
         user.set_password(self.cleaned_data["password"])
-        user.save()
         
-        User.objects.create(user=user)
-        
+        if commit:
+            user.save()
+    
         return user
+    
     
 class ContactForm(forms.Form):
     nombre = forms.CharField(
