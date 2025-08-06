@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.urls import reverse_lazy, reverse
-from django.views.generic import TemplateView, CreateView, FormView, DetailView, UpdateView, ListView
+from django.views.generic import TemplateView, CreateView, FormView, DetailView, UpdateView, ListView, DeleteView
 from .forms import LoginForm, RegistrationForm, ContactForm, ClientCreateForm
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect
@@ -124,8 +124,16 @@ class ClientUpdateView(UpdateView):
         return reverse('client_detail', args=[self.object.pk])
 
 
+@method_decorator(login_required, name='dispatch')
+class ClientDeleteView(DeleteView):
+    model = Client
+    template_name = '../templates/clients/client_delete.html'
+    success_url = reverse_lazy('client_list')
+    context_object_name = 'client'   
 
-
+    def form_valid(self, form):
+        messages.add_message(self.request, messages.SUCCESS, "Cliente eliminado correctamente")
+        return super(ClientDeleteView, self).form_valid(form)
 
 
 @login_required

@@ -1,0 +1,21 @@
+{% extends "general/layout.html" %}
+{% load crispy_forms_tags %}
+
+{% block head_title %}Eliminar Cliente{% endblock %}
+
+{% block page_content %}
+<div class="container my-5">
+    {% include '_includes/_messages.html' %}
+
+    <h1 class="mb-4">Eliminar cliente</h1>
+
+    <p class="lead">¿Estás seguro de que querés eliminar a <strong>{{ client.name }}</strong>?</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <a href="{% url 'client_list' %}" class="btn btn-secondary">Cancelar</a>
+        <button type="submit" class="btn btn-danger">Eliminar</button>
+    </form>
+
+</div>
+{% endblock %}

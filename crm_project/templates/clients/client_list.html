@@ -30,7 +30,7 @@
                     <td class="text-center">
                         <a href="{% url 'client_detail' client.pk %}" class="btn btn-sm btn-outline-info">👁Ver</a>
                         <a href="{% url 'client_update' client.pk %}" class="btn btn-sm btn-outline-warning">✏️Editar</a>
-                        <a href="{% comment %} {% url 'client_delete' client.pk %}" class="btn btn-sm btn-outline-danger" {% endcomment %}">🗑Eliminar</a>
+                        <a href="{% url 'client_delete' client.pk %}" class="btn btn-sm btn-outline-danger">🗑Eliminar</a>
                     </td>
                 </tr>
                 {% empty %}
