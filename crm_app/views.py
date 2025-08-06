@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from .models import Client, Company, Interaction
 
 # Create your views here.
@@ -70,6 +71,17 @@ class ContactView(TemplateView, FormView):
         return super().form_valid(form)
 
 
+@method_decorator(login_required, name='dispatch')
+class ClientListView(ListView):
+    model = Client
+    template_name = '../templates/clients/client_list.html'
+    context_object_name = 'clients'
+    
+    def get_queryset(self):
+        if self.request.user.is_authenticated:
+            return Client.objects.all().order_by('created_at')
+        
+    
 @login_required
 def logout_view(request):
     logout(request)
