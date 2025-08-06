@@ -1,0 +1,35 @@
+{% extends "general/layout.html" %}
+
+{% block head_title %}Detalle de la empresa{% endblock %}
+
+{% block page_content %}
+<div class="container my-5">
+    {% include '_includes/_messages.html' %}
+
+    <h2 class="mb-4">🏢 Detalle de la empresa</h2>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h4 class="card-title">{{ company.name|default_if_none:"Sin nombre" }}</h4>
+
+            <dl class="row">
+                <dt class="col-sm-3">📍 Dirección:</dt>
+                <dd class="col-sm-9">{{ company.address|default_if_none:"No especificado" }}</dd>
+
+                <dt class="col-sm-3">🌐 Sitio web:</dt>
+                <dd class="col-sm-9">{{ company.website|default_if_none:"No especificado" }}</dd>
+
+                <dt class="col-sm-3">📅 Fecha de creación:</dt>
+                <dd class="col-sm-9">{{ company.created_at|date:"d/m/Y" }}</dd>
+
+                <dt class="col-sm-3">📅 Fecha de ultima actualización:</dt>
+                <dd class="col-sm-9">{{ company.updated_at|date:"d/m/Y" }}</dd>
+            </dl>
+
+            <div class="mt-4">
+                <a href="{% url 'company_list' %}" class="btn btn-outline-secondary">⬅️ Volver al listado</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

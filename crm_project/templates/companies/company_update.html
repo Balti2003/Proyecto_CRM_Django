@@ -1,7 +1,7 @@
 {% extends "general/layout.html" %}
 {% load crispy_forms_tags %}
 
-{% block head_title %}Nuevo Cliente{% endblock %}
+{% block head_title %}Editar Empresa - CRM{% endblock %}
 
 {% block page_content %}
 <div class="container my-5">
@@ -11,7 +11,7 @@
         <div class="col-12 col-md-8">
             <div class="card shadow-sm border-0">
                 <div class="card-header bg-primary text-white">
-                    <h2 class="mb-0">Nuevo Cliente</h2>
+                    <h2 class="mb-0">Editar Empresa</h2>
                 </div>
                 <div class="card-body">
                     <form action="" method="post" enctype="multipart/form-data">
@@ -20,20 +20,14 @@
                             {{ form.name|as_crispy_field }}
                         </div>
                         <div class="mb-3">
-                            {{ form.email|as_crispy_field }}
+                            {{ form.address|as_crispy_field }}
                         </div>
                         <div class="mb-3">
-                            {{ form.phone|as_crispy_field }}
-                        </div>
-                        <div class="mb-3">
-                            {{ form.company|as_crispy_field }}
-                        </div>
-                        <div class="mb-3">
-                            {{ form.assigned_to|as_crispy_field }}
+                            {{ form.website|as_crispy_field }}
                         </div>
                         <div class="text-end">
-                            <button class="btn btn-primary">Crear</button>
-                            <a href="{% url 'client_list' %}" class="btn btn-secondary">Cancelar</a>
+                            <button class="btn btn-primary">Editar</button>
+                            <a href="{% url 'company_list' %}" class="btn btn-secondary">Cancelar</a>
                         </div>
                     </form>
                 </div>

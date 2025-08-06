@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import Client
+from .models import Client, Company
 
 class LoginForm(forms.Form):
     username = forms.CharField(label="Username")
@@ -54,4 +54,14 @@ class ClientCreateForm(forms.ModelForm):
             "phone",
             "company",
             "assigned_to",
+        ]
+        
+
+class CompanyCreateForm(forms.ModelForm):
+    class Meta:
+        model = Company
+        fields = [
+            "name",
+            "address",
+            "website",
         ]
