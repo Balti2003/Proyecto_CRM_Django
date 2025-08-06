@@ -1,0 +1,44 @@
+{% extends "general/layout.html" %}
+{% load crispy_forms_tags %}
+
+{% block head_title %}Editar Cliente - CRM{% endblock %}
+
+{% block page_content %}
+<div class="container my-5">
+    {% include '_includes/_messages.html' %}
+
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="mb-0">Editar Cliente</h2>
+                </div>
+                <div class="card-body">
+                    <form action="" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            {{ form.name|as_crispy_field }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.email|as_crispy_field }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.phone|as_crispy_field }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.company|as_crispy_field }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.assigned_to|as_crispy_field }}
+                        </div>
+                        <div class="text-end">
+                            <button class="btn btn-primary">Editar</button>
+                            <a href="{% url 'client_list' %}" class="btn btn-secondary">Cancelar</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

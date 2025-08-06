@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
+from .models import Client
 
 class LoginForm(forms.Form):
     username = forms.CharField(label="Username")
@@ -42,3 +43,15 @@ class ContactForm(forms.Form):
         widget=forms.Textarea(attrs={'class': 'form-control', 'id': 'id_mensaje', 'rows': 5}),
         label="Mensaje"
     )
+    
+
+class ClientCreateForm(forms.ModelForm):
+    class Meta:
+        model = Client
+        fields = [
+            "name",
+            "email",
+            "phone",
+            "company",
+            "assigned_to",
+        ]

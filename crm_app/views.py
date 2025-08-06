@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.urls import reverse_lazy, reverse
 from django.views.generic import TemplateView, CreateView, FormView, DetailView, UpdateView, ListView
-from .forms import LoginForm, RegistrationForm, ContactForm
+from .forms import LoginForm, RegistrationForm, ContactForm, ClientCreateForm
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect
 from django.contrib import messages
@@ -80,8 +80,54 @@ class ClientListView(ListView):
     def get_queryset(self):
         if self.request.user.is_authenticated:
             return Client.objects.all().order_by('created_at')
-        
+
+
+@method_decorator(login_required, name='dispatch')
+class ClientDetailView(DetailView):
+    model = Client
+    template_name = '../templates/clients/client_detail.html'
+    context_object_name = 'client'
     
+    def get_initial(self):
+        self.initial['client_pk'] =  self.get_object().pk
+        return super().get_initial()
+    
+    def get_success_url(self):
+        return reverse('client_detail', args=[self.get_object().pk])
+
+
+@method_decorator(login_required, name='dispatch')
+class ClientCreateView(CreateView):
+    template_name = '../templates/clients/client_create.html'
+    model = Client
+    form_class = ClientCreateForm
+    success_url = reverse_lazy('client_list')
+    
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        messages.add_message(self.request, messages.SUCCESS, "Cliente creado correctamente")
+        return super(ClientCreateView, self).form_valid(form)
+
+
+@method_decorator(login_required, name='dispatch')
+class ClientUpdateView(UpdateView):
+    template_name = '../templates/clients/client_update.html'
+    model = Client
+    form_class = ClientCreateForm
+    success_url = reverse_lazy('client_list')
+
+    def form_valid(self, form):
+        messages.add_message(self.request, messages.SUCCESS, "Cliente editado correctamente")
+        return super(ClientUpdateView, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse('client_detail', args=[self.object.pk])
+
+
+
+
+
+
 @login_required
 def logout_view(request):
     logout(request)

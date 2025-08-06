@@ -1,0 +1,38 @@
+{% extends "general/layout.html" %}
+
+{% block head_title %}Detalle del Cliente - {{ client.name }}{% endblock %}
+
+{% block page_content %}
+<div class="container my-5">
+    {% include '_includes/_messages.html' %}
+
+    <h2 class="mb-4">👤 Detalle del Cliente</h2>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h4 class="card-title">{{ client.name|default_if_none:"Sin nombre" }}</h4>
+
+            <dl class="row">
+                <dt class="col-sm-3">📧 Email:</dt>
+                <dd class="col-sm-9">{{ client.email|default_if_none:"No especificado" }}</dd>
+
+                <dt class="col-sm-3">📞 Teléfono:</dt>
+                <dd class="col-sm-9">{{ client.phone|default_if_none:"No especificado" }}</dd>
+
+                <dt class="col-sm-3">🏢 Empresa:</dt>
+                <dd class="col-sm-9">{{ client.company|default_if_none:"No especificada" }}</dd>
+
+                <dt class="col-sm-3">👤 Asignado a:</dt>
+                <dd class="col-sm-9">{{ client.assigned_to|default_if_none:"No especificada" }}</dd>
+
+                <dt class="col-sm-3">📅 Fecha de registro:</dt>
+                <dd class="col-sm-9">{{ client.created_at|date:"d/m/Y" }}</dd>
+            </dl>
+
+            <div class="mt-4">
+                <a href="{% url 'client_list' %}" class="btn btn-outline-secondary">⬅️ Volver al listado</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
