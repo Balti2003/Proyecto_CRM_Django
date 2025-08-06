@@ -1,0 +1,49 @@
+{% extends "general/layout.html" %}
+
+{% block head_title %}Interacción del usuario - CRM{% endblock %}
+
+{% block page_content %}
+<div class="container my-5">
+    {% include '_includes/_messages.html' %}
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mb-0">Interacciónes del usuario {{ interaction.client }}</h1>
+        <a href="{% url 'client_detail' interaction.client.pk %}" class="btn btn-secondary">
+            ← Volver al Cliente
+        </a>
+    </div>
+
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            Información de la Interacción
+        </div>
+        <div class="card-body">
+            <h5 class="card-title mb-3">
+                {{ interaction.created_at|default:"Sin tipo seleccionado" }}
+            </h5>
+
+            <p class="mb-2">
+                <strong>Fecha:</strong>
+                {{ interaction.date|date:"d/m/Y H:i" }}
+            </p>
+
+            <p class="mb-2">
+                <strong>Tipo de Interacción:</strong>
+                {{ interaction.type|capfirst|default:"No especificado" }}
+            </p>
+
+            <p class="mb-4">
+                <strong>Descripción:</strong><br>
+                {{ interaction.notes|linebreaks|default:"Sin descripción proporcionada." }}
+            </p>
+
+            <p class="mb-0">
+                <strong>Cliente Asociado:</strong>
+                <a href="{% url 'client_detail' interaction.client.pk %}">
+                    {{ interaction.client.name }}
+                </a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

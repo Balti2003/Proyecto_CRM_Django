@@ -5,6 +5,7 @@ from django.conf import settings
 from crm_app.views import HomeView, LoginView, RegisterView, LegalView, ContactView, logout_view
 from crm_app.views import ClientListView, ClientCreateView, ClientDetailView, ClientUpdateView, ClientDeleteView
 from crm_app.views import CompanyListView, CompanyDetailView, CompanyCreateView, CompanyUpdateView, CompanyDeleteView
+from crm_app.views import InteractionDetailView
 
 urlpatterns = [
     path("", HomeView.as_view(), name="home"),
@@ -25,7 +26,7 @@ urlpatterns = [
     path("company/<pk>/delete/", CompanyDeleteView.as_view(), name="company_delete"),
     #path("interaction/list/", InteractionListView.as_view(), name="interaction_list"),
     #path("interaction/create/", InteractionCreateView.as_view(), name="interaction_create"),
-    #path("interaction/<pk>/", InteractionDetailView.as_view(), name="interaction_detail"),
+    path("interaction/<pk>/", InteractionDetailView.as_view(), name="interaction_detail"),
     #path("interaction/<pk>/update/", InteractionUpdateView.as_view(), name="interaction_update"),
     #path("interaction/<pk>/delete/", InteractionDeleteView.as_view(), name="interaction_delete"),
     path('admin/', admin.site.urls),

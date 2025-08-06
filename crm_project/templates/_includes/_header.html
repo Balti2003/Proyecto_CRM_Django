@@ -20,24 +20,25 @@
                             <a class="nav-link" href="{% url 'register' %}">Registro</a>
                         </li>
                     {% endif %}
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'client_list' %}">Clientes</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'company_list' %}">Empresas</a>
-                    </li> 
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'contact' %}">Contacto</a>
-                    </li>
-
+                    
                     {% if request.user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'client_list' %}">Clientes</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'company_list' %}">Empresas</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'contact' %}">Contacto</a>
+                        </li>
+
                         <li class="nav-item">
                             <a class="nav-link text-danger" href="{% url 'logout' %}">Cerrar sesión</a>
                         </li>
                     {% endif %}
+
                 </ul>
             </div>
         </div>

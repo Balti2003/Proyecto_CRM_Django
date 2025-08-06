@@ -203,6 +203,23 @@ class CompanyDeleteView(DeleteView):
         return super(CompanyDeleteView, self).form_valid(form)
 
 
+# Vistas de interacciones
+@method_decorator(login_required, name='dispatch')
+class InteractionDetailView(DetailView):
+    model = Interaction
+    template_name = '../templates/interactions/interaction_detail.html'
+    context_object_name = 'interaction'
+    
+    def get_initial(self):
+        self.initial['interaction_pk'] =  self.get_object().pk
+        return super().get_initial()
+    
+    def get_success_url(self):
+        return reverse('interaction_detail', args=[self.get_object().pk])
+
+
+
+
 @login_required
 def logout_view(request):
     logout(request)
