@@ -6,7 +6,12 @@
 <div class="container my-5">
     {% include '_includes/_messages.html' %}
 
-    <h1 class="mb-4">Clientes del CRM</h1>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="mb-0">Clientes del CRM</h1>
+        <a href="{% comment %} {% url 'client_create' %} {% endcomment %}" class="btn btn-success">
+            ➕ Nuevo Cliente
+        </a>
+    </div>
 
     <div class="table-responsive">
         <table class="table table-striped table-hover align-middle">
