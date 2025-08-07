@@ -1,7 +1,8 @@
 from django.contrib.auth.models import User
+from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views.generic import TemplateView, CreateView, FormView, DetailView, UpdateView, ListView, DeleteView
-from .forms import LoginForm, RegistrationForm, ContactForm, ClientCreateForm, CompanyCreateForm
+from .forms import LoginForm, RegistrationForm, ContactForm, ClientCreateForm, CompanyCreateForm, InteractionCreateForm
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect
 from django.contrib import messages
@@ -89,12 +90,11 @@ class ClientDetailView(DetailView):
     template_name = '../templates/clients/client_detail.html'
     context_object_name = 'client'
     
-    def get_initial(self):
-        self.initial['client_pk'] =  self.get_object().pk
-        return super().get_initial()
-    
-    def get_success_url(self):
-        return reverse('client_detail', args=[self.get_object().pk])
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        client = self.get_object()
+        context['interactions'] = client.interactions.all()
+        return context
 
 
 @method_decorator(login_required, name='dispatch')
@@ -154,13 +154,7 @@ class CompanyDetailView(DetailView):
     model = Company
     template_name = '../templates/companies/company_detail.html'
     context_object_name = 'company'
-    
-    def get_initial(self):
-        self.initial['company_pk'] =  self.get_object().pk
-        return super().get_initial()
-    
-    def get_success_url(self):
-        return reverse('company_detail', args=[self.get_object().pk])
+
 
 
 @method_decorator(login_required, name='dispatch')
@@ -209,17 +203,86 @@ class InteractionDetailView(DetailView):
     model = Interaction
     template_name = '../templates/interactions/interaction_detail.html'
     context_object_name = 'interaction'
-    
-    def get_initial(self):
-        self.initial['interaction_pk'] =  self.get_object().pk
-        return super().get_initial()
-    
+
+
+@method_decorator(login_required, name='dispatch')
+class InteractionCreateView(CreateView):
+    template_name = '../templates/interactions/interaction_create.html'
+    model = Interaction
+    form_class = InteractionCreateForm
+    success_url = reverse_lazy('client_detail')
+
+    def dispatch(self, request, *args, **kwargs):
+        self.client = get_object_or_404(Client, pk=kwargs['client_pk'])
+        return super().dispatch(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        form.instance.client = self.client
+        form.instance.user = self.request.user
+        messages.add_message(self.request, messages.SUCCESS, "Interacción creada correctamente")
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['client'] = self.client
+        return context
+
     def get_success_url(self):
-        return reverse('interaction_detail', args=[self.get_object().pk])
+        return reverse('client_detail', args=[self.client.pk])
 
 
+@method_decorator(login_required, name='dispatch')
+class InteractionUpdateView(UpdateView):
+    template_name = '../templates/interactions/interaction_update.html'
+    model = Interaction
+    form_class = InteractionCreateForm
+    success_url = reverse_lazy('client_detail')
+
+    def dispatch(self, request, *args, **kwargs):
+        self.interaction = self.get_object()
+        self.client = self.interaction.client
+        return super().dispatch(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        form.instance.client = self.client
+        messages.success(self.request, "Interacción actualizada correctamente")
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse('client_detail', args=[self.client.pk])
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['client'] = self.client
+        return context
 
 
+@method_decorator(login_required, name='dispatch')
+class InteractionDeleteView(DeleteView):
+    model = Interaction
+    template_name = '../templates/interactions/interaction_delete.html'
+    success_url = reverse_lazy('client_detail')
+    context_object_name = 'interaction'   
+
+    def dispatch(self, request, *args, **kwargs):
+        self.interaction = self.get_object()
+        self.client = self.interaction.client
+        return super().dispatch(request, *args, **kwargs)
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(self.request, "Interacción eliminada correctamente")
+        return super().delete(request, *args, **kwargs)
+
+    def get_success_url(self):
+        return reverse('client_detail', args=[self.client.pk])
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['client'] = self.client
+        return context
+    
+    
 @login_required
 def logout_view(request):
     logout(request)

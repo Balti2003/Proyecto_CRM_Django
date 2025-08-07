@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import Client, Company
+from .models import Client, Company, Interaction
 
 class LoginForm(forms.Form):
     username = forms.CharField(label="Usuario")
@@ -64,4 +64,16 @@ class CompanyCreateForm(forms.ModelForm):
             "name",
             "address",
             "website",
+        ]
+        
+
+class InteractionCreateForm(forms.ModelForm):
+    class Meta:
+        model = Interaction
+        fields = [
+            "client",
+            "user",
+            "date",
+            "type",
+            "notes",
         ]

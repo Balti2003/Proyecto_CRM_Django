@@ -1,0 +1,24 @@
+{% extends "general/layout.html" %}
+{% load crispy_forms_tags %}
+
+{% block head_title %}Eliminar Interacción{% endblock %}
+
+{% block page_content %}
+<div class="container my-5">
+    {% include '_includes/_messages.html' %}
+
+    <h2 class="mb-4 text-danger">🗑️ Eliminar Interacción</h2>
+
+    <div class="alert alert-warning">
+        <strong>¿Estás seguro que deseas eliminar esta interacción?</strong><br>
+        Tipo: {{ interaction.get_type_display }}<br>
+        Fecha: {{ interaction.date|date:"d/m/Y" }}
+    </div>
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Eliminar</button>
+        <a href="{% url 'client_detail' client.pk %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock %}
