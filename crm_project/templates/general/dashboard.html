@@ -1,0 +1,96 @@
+{% extends "general/layout.html" %}
+
+{% block head_title %}Dashboard - CRM{% endblock %}
+
+{% block page_content %}
+<div class="container py-5">
+    <h1 class="mb-4">📊 Dashboard</h1>
+
+    <!-- Contadores -->
+    <div class="row g-4 mb-5">
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 text-center bg-light">
+                <div class="card-body">
+                    <h2 class="display-5 text-primary">{{ total_clients }}</h2>
+                    <p class="fw-bold">Total de Clientes</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 text-center bg-light">
+                <div class="card-body">
+                    <h2 class="display-5 text-success">{{ total_companies }}</h2>
+                    <p class="fw-bold">Total de Empresas</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 text-center bg-light">
+                <div class="card-body">
+                    <h2 class="display-5 text-warning">{{ total_interactions }}</h2>
+                    <p class="fw-bold">Total de Interacciones</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gráfico de pastel -->
+    <div class="card shadow-sm border-0 mb-5">
+        <div class="card-body">
+            <h3 class="mb-4">📌 Interacciones por Tipo</h3>
+            <canvas id="pieChart"></canvas>
+        </div>
+    </div>
+
+    <!-- Gráfico de barras -->
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+            <h3 class="mb-4">🏢 Clientes por Empresa</h3>
+            <canvas id="barChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Pie Chart
+    new Chart(document.getElementById('pieChart'), {
+        type: 'pie',
+        data: {
+            labels: {{ interactions_labels|safe }},
+            datasets: [{
+                label: 'Interacciones por Tipo',
+                data: {{ interactions_data|safe }},
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.6)',
+                    'rgba(54, 162, 235, 0.6)',
+                    'rgba(255, 206, 86, 0.6)',
+                    'rgba(75, 192, 192, 0.6)'
+                ]
+            }]
+        }
+    });
+
+    // Bar Chart
+    new Chart(document.getElementById('barChart'), {
+        type: 'bar',
+        data: {
+            labels: {{ companies_labels|safe }},
+            datasets: [{
+                label: 'Clientes',
+                data: {{ companies_data|safe }},
+                backgroundColor: 'rgba(54, 162, 235, 0.6)'
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+</script>
+{% endblock %}

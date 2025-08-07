@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls.static import static
 from django.conf import settings
-from crm_app.views import HomeView, LoginView, RegisterView, LegalView, ContactView, logout_view
+from crm_app.views import HomeView, LoginView, RegisterView, LegalView, ContactView, logout_view, DashboardView
 from crm_app.views import ClientListView, ClientCreateView, ClientDetailView, ClientUpdateView, ClientDeleteView
 from crm_app.views import CompanyListView, CompanyDetailView, CompanyCreateView, CompanyUpdateView, CompanyDeleteView
 from crm_app.views import InteractionDetailView, InteractionCreateView, InteractionUpdateView, InteractionDeleteView
@@ -14,6 +14,7 @@ urlpatterns = [
     path("register/", RegisterView.as_view(), name="register"),
     path("legal/", LegalView.as_view(), name="legal"),
     path("contact/", ContactView.as_view(), name="contact"),
+    path("dashboard/", DashboardView.as_view(), name="dashboard"),
     path("client/list/", ClientListView.as_view(), name="client_list"),
     path("client/create/", ClientCreateView.as_view(), name="client_create"),
     path("client/<pk>/", ClientDetailView.as_view(), name="client_detail"),

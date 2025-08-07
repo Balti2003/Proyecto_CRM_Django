@@ -8,67 +8,39 @@
 
     <div class="card shadow-sm border-0 mb-5">
         <div class="card-body text-center">
-            <h1 class="card-title">Bienvenido a nuestro CRM📊</h1>
+            <h1 class="card-title fw-bold">Bienvenido a nuestro CRM 📊</h1>
             <p class="card-text lead">
-                Gestión de clientes de manera rapida y eficiente con nuestro sistema de CRM.
+                Gestión de clientes de manera rápida y eficiente con nuestro sistema de CRM.
             </p>
         </div>
     </div>
 
-    <!-- Introducción al CRM -->
     <div class="mb-5">
-        <h2 class="text-center text-success">¿Qué es este sistema?</h2>
+        <h2 class="text-center text-success fw-bold mb-4">¿Qué es este sistema?</h2>
         <p class="text-center fs-5">
             Este sistema de gestión de clientes (CRM) está diseñado para ayudarte a organizar, analizar y aprovechar al máximo la información comercial de tu empresa. 
-            Podrás gestionar clientes potenciales, hacer seguimiento de ventas, registrar interacciones y optimizar tus relaciones comerciales de forma eficiente y centralizada.
+            Podrás gestionar clientes potenciales, registrar interacciones y optimizar tus relaciones comerciales de forma eficiente y centralizada.
         </p>
         <p class="text-center fs-5">
             Nuestro objetivo es brindarte una herramienta clara y práctica para tomar decisiones estratégicas basadas en datos, mejorar la productividad del equipo de ventas y fortalecer el vínculo con tus clientes.
         </p>
     </div>
 
-    <div class="row text-center mb-5">
-    <div class="col-md-3">
+    <div class="text-center mb-5">
+        <a href="{% url 'dashboard' %}" class="btn btn-primary btn-lg shadow-sm px-5">
+            Dashboard
+        </a>
+    </div>
+
+    <div class="col-md-4 mx-auto">
         <div class="card shadow-sm border-0">
-            <div class="card-body">
-                <h5 class="card-title">👥 Clientes</h5>
-                <p class="display-6">{{ total_clientes }}</p>
+            <div class="card-body text-center">
+                <p class="mb-0">Estás logueado como:</p>
+                <strong class="text-primary">{{ user.get_username }}</strong>
             </div>
         </div>
     </div>
 
-    <div class="col-md-3">
-        <div class="card shadow-sm border-0">
-            <div class="card-body">
-                <h5 class="card-title">🙍🏻‍♂️ Usuarios</h5>
-                <p class="display-6">{{ total_usuarios }}</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-3">
-        <div class="card shadow-sm border-0">
-            <div class="card-body">
-                <h5 class="card-title">🏢 Empresas</h5>
-                <p class="display-6">{{ total_empresas }}</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-3">
-        <div class="card shadow-sm border-0">
-            <div class="card-body">
-                <h5 class="card-title">📊 Interacciones</h5>
-                <p class="display-6">{{ total_interacciones }}</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="col-md-3 mx-auto">
-    <div class="card shadow-sm border-0">
-        <p class="text-center py-2">Estas logueado con el usuario: <strong>{{ user.get_username }}</strong></p>
-    </div>
 </div>
 
 {% endblock %}

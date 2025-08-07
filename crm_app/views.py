@@ -9,6 +9,9 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from .models import Client, Company, Interaction
+from django.db.models import Q
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Count
 
 # Vistas generales
 class HomeView(TemplateView):
@@ -72,6 +75,37 @@ class ContactView(TemplateView, FormView):
         return super().form_valid(form)
 
 
+class DashboardView(LoginRequiredMixin, TemplateView):
+    template_name = '../templates/general/dashboard.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # Contadores
+        context['total_clients'] = Client.objects.count()
+        context['total_companies'] = Company.objects.count()
+        context['total_interactions'] = Interaction.objects.count()
+
+        # Gráfico de pastel: Interacciones por tipo
+        interactions_by_type = (
+            Interaction.objects
+            .values('type')
+            .annotate(total=Count('id'))
+        )
+        context['interactions_labels'] = [item['type'] for item in interactions_by_type]
+        context['interactions_data'] = [item['total'] for item in interactions_by_type]
+
+        # Gráfico de barras: Clientes por empresa
+        clients_per_company = (
+            Company.objects
+            .annotate(client_count=Count('clients'))
+        )
+        context['companies_labels'] = [company.name for company in clients_per_company]
+        context['companies_data'] = [company.client_count for company in clients_per_company]
+
+        return context
+
+
 # Vistas de clientes
 @method_decorator(login_required, name='dispatch')
 class ClientListView(ListView):
@@ -80,8 +114,20 @@ class ClientListView(ListView):
     context_object_name = 'clients'
     
     def get_queryset(self):
-        if self.request.user.is_authenticated:
-            return Client.objects.all().order_by('created_at')
+        queryset = super().get_queryset()
+        search_query = self.request.GET.get('q', '')
+        if search_query:
+            queryset = queryset.filter(
+                Q(name__icontains=search_query) |
+                Q(email__icontains=search_query) |
+                Q(company__name__icontains=search_query)
+            )
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['search_query'] = self.request.GET.get('q', '')
+        return context
 
 
 @method_decorator(login_required, name='dispatch')
@@ -145,8 +191,20 @@ class CompanyListView(ListView):
     context_object_name = 'companys'
     
     def get_queryset(self):
-        if self.request.user.is_authenticated:
-            return Company.objects.all().order_by('created_at')
+        queryset = super().get_queryset()
+        search_query = self.request.GET.get('q', '')
+        if search_query:
+            queryset = queryset.filter(
+                Q(name__icontains=search_query) |
+                Q(address__icontains=search_query) |
+                Q(website__icontains=search_query)
+            )
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['search_query'] = self.request.GET.get('q', '')
+        return context
 
 
 @method_decorator(login_required, name='dispatch')
@@ -282,7 +340,8 @@ class InteractionDeleteView(DeleteView):
         context['client'] = self.client
         return context
     
-    
+
+# Vista de logout   
 @login_required
 def logout_view(request):
     logout(request)
