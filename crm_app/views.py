@@ -12,6 +12,9 @@ from .models import Client, Company, Interaction
 from django.db.models import Q
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Count
+from django.db.models.functions import TruncMonth
+import calendar
+
 
 # Vistas generales
 class HomeView(TemplateView):
@@ -103,6 +106,20 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         context['companies_labels'] = [company.name for company in clients_per_company]
         context['companies_data'] = [company.client_count for company in clients_per_company]
 
+        # Gráfico de líneas: Interacciones mensuales
+        monthly_interactions = (
+            Interaction.objects
+            .annotate(month=TruncMonth('date'))
+            .values('month')
+            .annotate(total=Count('id'))
+            .order_by('month')
+        )
+
+        context['months_labels'] = [
+            calendar.month_name[item['month'].month] for item in monthly_interactions
+        ]
+        context['monthly_data'] = [item['total'] for item in monthly_interactions]
+        
         return context
 
 
