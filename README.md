@@ -88,12 +88,6 @@ Incluye un **dashboard interactivo** con estadísticas en tiempo real y visualiz
 
 ---
 
-## 📜 Licencia
-
-Este proyecto está bajo la licencia MIT - ver el archivo [LICENSE](LICENSE) para más detalles.
-
----
-
 ## 👨‍💻 Autor
 
 **Lomello Baltasar** – [baltasarlomello@live.com](mailto:baltasarlomello@live.com)  
